@@ -3,3 +3,6 @@
 
 # Data files
 *.txt
+
+# Templates
+template.md
