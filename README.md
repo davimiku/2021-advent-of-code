@@ -19,3 +19,4 @@ day, althougb I will repeat if I have to.
 | 1   | Sonar Sweep       | C        |
 | 2   | Dive!             | Python   |
 | 3   | Binary Diagnostic | C++      |
+| 4   | Giant Squid       | Rust     |
