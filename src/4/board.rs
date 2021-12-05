@@ -1,7 +1,5 @@
 use std::fmt::{self, Write};
 
-use array2d::Array2D;
-
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) enum BoardSpaceState {
     Marked,
@@ -57,54 +55,62 @@ impl Into<BoardSpace> for usize {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct Board {
-    data: Array2D<BoardSpace>,
+    data: Vec<Vec<BoardSpace>>,
 }
 
 impl Board {
-    pub fn new(spaces: Vec<Vec<BoardSpace>>) -> Board {
-        let data = Array2D::from_rows(&spaces);
-
+    pub fn new(data: Vec<Vec<BoardSpace>>) -> Board {
         Board { data }
     }
 
     pub fn sum_of_unmarked(&self) -> usize {
-        self.data
-            .elements_row_major_iter()
-            .fold(0, |acc, space| match space.is_marked() {
-                true => acc,
-                false => acc + space.num,
-            })
+        let flat_iter = self.data.iter().flatten();
+        flat_iter.fold(0, |acc, space| match space.is_marked() {
+            true => acc,
+            false => acc + space.num,
+        })
     }
 
     /// Mutates the board data to mark the space if the number of the space
     /// matches the number provided.
     pub fn mark(&mut self, num: usize) {
-        let rows = self.data.as_rows();
-
-        for (row_index, row) in rows.iter().enumerate() {
-            for (space_index, space) in row.iter().enumerate() {
-                if space.num == num {
-                    self.data[(row_index, space_index)].state = BoardSpaceState::Marked;
+        for row_index in 0..self.data.len() {
+            for space_index in 0..self.data[row_index].len() {
+                if self.data[row_index][space_index].num == num {
+                    self.data[row_index][space_index].state = BoardSpaceState::Marked;
                 }
             }
         }
     }
 
     pub fn is_winner(&self) -> bool {
-        let has_row_winner = is_winner(self.data.rows_iter());
-        let has_column_winner = is_winner(self.data.columns_iter());
+        let has_row_winner = self.has_row_winner();
+
+        let has_column_winner = self.has_column_winner();
 
         has_row_winner || has_column_winner
     }
-}
 
-fn is_winner<'a>(mut iter: impl Iterator<Item = impl Iterator<Item = &'a BoardSpace>>) -> bool {
-    iter.any(|mut space_iter| space_iter.all(|space| space.is_marked()))
+    fn has_row_winner(&self) -> bool {
+        self.data
+            .iter()
+            .any(|row| row.iter().all(|space| space.is_marked()))
+    }
+
+    fn has_column_winner(&self) -> bool {
+        for i in 0..self.data[0].len() {
+            let is_winner = self.data.iter().all(|row| row[i].is_marked());
+            if is_winner {
+                return true;
+            }
+        }
+        false
+    }
 }
 
 impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for row_iter in self.data.rows_iter() {
+        for row_iter in self.data.iter() {
             for space in row_iter {
                 f.write_str(&space.to_string())?;
             }
