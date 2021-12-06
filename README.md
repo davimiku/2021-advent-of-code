@@ -14,9 +14,10 @@ of that day.
 I am attempting to use a different programming language for each
 day, althougb I will repeat if I have to.
 
-| Day | Challenge Name    | Language |
-| --- | ----------------- | -------- |
-| 1   | Sonar Sweep       | C        |
-| 2   | Dive!             | Python   |
-| 3   | Binary Diagnostic | C++      |
-| 4   | Giant Squid       | Rust     |
+| Day | Challenge Name       | Language |
+| --- | -------------------- | -------- |
+| 1   | Sonar Sweep          | C        |
+| 2   | Dive!                | Python   |
+| 3   | Binary Diagnostic    | C++      |
+| 4   | Giant Squid          | Rust     |
+| 5   | Hydrothermal Venture | ~~Ruby~~ |
