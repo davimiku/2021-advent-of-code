@@ -21,3 +21,4 @@ day, althougb I will repeat if I have to.
 | 3   | Binary Diagnostic    | C++      |
 | 4   | Giant Squid          | Rust     |
 | 5   | Hydrothermal Venture | ~~Ruby~~ |
+| 6   | Lanternfish          | Java     |
